@@ -1,0 +1,44 @@
+{
+  "Sé": {
+    "Liberdade": 2,
+    "São Bento": 2,
+    "Anhangabaú": 2,
+    "Brás": 5
+  },
+  "Liberdade": {
+    "Sé": 2
+  },
+  "São Bento": {
+    "Sé": 2,
+    "Luz": 3
+  },
+  "Anhangabaú": {
+    "Sé": 2,
+    "República": 2
+  },
+  "República": {
+    "Anhangabaú": 2,
+    "Luz": 3
+  },
+  "Luz": {
+    "São Bento": 3,
+    "República": 3,
+    "Brás": 4
+  },
+  "Brás": {
+    "Sé": 5,
+    "Luz": 4,
+    "Tatuapé": 6
+  },
+  "Tatuapé": {
+    "Brás": 6,
+    "Braz Cubas": 45
+  },
+  "Braz Cubas": {
+    "Tatuapé": 45,
+    "Estudantes": 5
+  },
+  "Estudantes": {
+    "Braz Cubas": 5
+  }
+}
