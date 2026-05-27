@@ -30,37 +30,19 @@
 # Clone o repositório
 git clone [https://github.com/MuriloSantii/expresso-catraca.git](https://github.com/MuriloSantii/expresso-catraca.git)
 cd expresso-catraca
+
+# Instale as dependências da interface visual e testes
+pip install streamlit pytest
 ```
 
 **Execução:**
 ```bash
-# Comando para rodar o MVP no terminal
-python src/main.py
+# Comando para rodar a interface Web do MVP
+streamlit run src/main.py
 ```
 
 **Saída esperada:**
-```text
-==================================================
-🚆 EXPRESSO CATRACA - INICIALIZANDO MVP 🚆
-==================================================
-📂 Carregando mapa de: data\grafo_sp.json...
-✅ Mapa carregado na memória com sucesso!
-
---- NOVA ROTA ---
-📍 Digite a estação de origem (ex: Sé): Sé
-🎯 Digite a estação de destino (ex: Luz): Luz
-
-⚙️  Calculando a rota mais rápida...
-
-==========================================
-📦 EXPRESSO CATRACA - RECIBO DE ROTA 📦
-==========================================
-📍 Origem:  Sé
-🎯 Destino: Luz
-⏱️ Tempo Estimado: 5 minutos
-🛤️ Trajeto: Sé -> São Bento -> Luz
-==========================================
-```
+O terminal iniciará um servidor local e o seu navegador padrão abrirá automaticamente na página `http://localhost:8501`, exibindo a interface visual do sistema Expresso Catraca para seleção de rotas.
 
 ---
 
@@ -113,17 +95,17 @@ expresso-catraca/
     └── test_algoritmos.py
 ```
 
-**Desvios em relação ao E2**: Sem desvios. Estrutura fiel à arquitetura em camadas projetada.
+**Desvios em relação ao E2**: Sem desvios na lógica. Interface de entrada/saída migrada do terminal nativo para ambiente Web (Streamlit).
 
 ---
 
 ## 4. Telas do MVP
 
-### Tela de Entrada / Resultado CLI
+### Interface Web - Seleção e Resultado
 
-![Tela do Terminal](./docs/assets/mvp_terminal.png)
+![Tela Web Streamlit](./docs/assets/mvp_terminal.png)
 
-*Descrição:* Interface de linha de comando operando em fluxo contínuo. Demonstra a injeção do JSON e a execução do roteamento com sucesso. *(Nota: Guarde o print do terminal rodando o sistema na pasta docs/assets)*.
+*Descrição:* Interface gráfica web (Streamlit) operando via navegador. Demonstra menus de seleção suspensos para coleta de origem e destino, além de caixas de sucesso com o tempo estimado e o trajeto detalhado do algoritmo. *(Nota: Tire um print novo da sua tela no navegador e salve em docs/assets substituindo a imagem antiga)*.
 
 ---
 
@@ -153,6 +135,8 @@ tests\test_algoritmos.py ...                                             [100%]
 | Hash (7 chars) | Mensagem | Autor |
 |----------------|----------|-------|
 | a7240ee | `feat: entrega completa do MVP (E3) com rotas, testes e documentação` | Murilo |
+| [novo hash] | `feat: migra interface do terminal para web com Streamlit` | Murilo |
+| [novo hash] | `docs: atualiza comandos de execucao para o streamlit` | Murilo |
 
 ---
 
@@ -163,8 +147,8 @@ tests\test_algoritmos.py ...                                             [100%]
 | Classe do grafo | ✅ Completo | Operações de vértices e arestas isoladas. |
 | Algoritmo principal | ✅ Completo | Dijkstra com fila de prioridade implementado. |
 | Leitura de arquivo | ✅ Completo | Leitor converte dicionários JSON nativamente. |
-| Tela de entrada | ✅ Completo | Coleta via CLI. |
-| Tela de resultado | ✅ Completo | Output de console padronizado em recibo. |
+| Tela de entrada | ✅ Completo | Interface gráfica (Web) com menus suspensos. |
+| Tela de resultado | ✅ Completo | Output renderizado visualmente pós-processamento. |
 | Testes unitários | ✅ Completo | Casos base, conexões nulas e malhas totais testados. |
 
 ---
