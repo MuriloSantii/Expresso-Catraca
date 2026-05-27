@@ -1,4 +1,3 @@
-# src/io/leitor_json.py
 import json
 from src.core.grafo import Grafo
 
@@ -9,7 +8,6 @@ def carregar_grafo_do_json(caminho_arquivo):
     try:
         with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
             dados = json.load(arquivo)
-            
             
             for origem, destinos in dados.items():
                 grafo_sp.adicionar_vertice(origem)

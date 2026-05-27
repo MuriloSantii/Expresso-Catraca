@@ -1,52 +1,57 @@
-# src/main.py
+import streamlit as st
 import sys
 import os
 
+# Ajuste para o Python achar as suas pastas (core, io, algorithms)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# Importa as funções com os nomes exatos que você criou
 from src.io.leitor_json import carregar_grafo_do_json
 from src.algorithms.dijkstra import calcular_rota_mais_rapida
 
-def main():
-    print("\n" + "="*50)
-    print("🚆 EXPRESSO CATRACA - INICIALIZANDO MVP 🚆")
-    print("="*50)
+# 1. Configuração da página Web
+st.set_page_config(page_title="Expresso Catraca", page_icon="🚆", layout="centered")
 
-    # 1. Camada I/O: Carrega os dados do mapa a partir do JSON
-    caminho_dados = os.path.join('data', 'grafo_sp.json')
-    print(f"📂 Carregando mapa de: {caminho_dados}...")
-    
-    mapa_metro = carregar_grafo_do_json(caminho_dados)
-    
-    if not mapa_metro:
-         print("❌ Falha ao carregar o mapa. Verifique se o arquivo existe.")
-         return
-         
-    print("✅ Mapa carregado na memória com sucesso!\n")
+# 2. Título e cabeçalho
+st.title("🚆 Expresso Catraca")
+st.markdown("Encontre a rota mais rápida na malha metroviária de São Paulo.")
+st.divider()
 
-    # 2. Tela de Entrada (UI/CLI)
-    print("--- NOVA ROTA ---")
-    origem = input("📍 Digite a estação de origem (ex: Sé): ").strip()
-    destino = input("🎯 Digite a estação de destino (ex: Luz): ").strip()
+# 3. Carregar o Grafo (O cache evita ler o JSON toda vez que clica num botão)
+@st.cache_data
+def carregar_dados():
+    caminho_arquivo = os.path.join(os.path.dirname(__file__), '..', 'data', 'grafo_sp.json')
+    grafo = carregar_grafo_do_json(caminho_arquivo)
+    return grafo
 
-    print("\n⚙️  Calculando a rota mais rápida...\n")
+grafo_obj = carregar_dados()
 
-    # 3. Camada Core/Algorithms: Executa o Dijkstra
-    tempo, rota = calcular_rota_mais_rapida(mapa_metro, origem, destino)
+# Pegar a lista de todas as estações em ordem alfabética para o menu
+lista_estacoes = sorted(list(grafo_obj.adjacencias.keys()))
 
-    # 4. Tela de Resultado (UI/CLI)
-    if tempo == float('infinity'):
-        print("❌ Não foi possível encontrar uma rota. Verifique o nome das estações.")
+# 4. Construção da Interface (Menus de seleção)
+col1, col2 = st.columns(2)
+
+with col1:
+    origem = st.selectbox("📍 Estação de Origem:", lista_estacoes)
+
+with col2:
+    destino = st.selectbox("🎯 Estação de Destino:", lista_estacoes)
+
+st.write("") # Espaçamento
+
+# 5. O Botão Mágico
+if st.button("Calcular Rota Mais Rápida 🚀", use_container_width=True):
+    if origem == destino:
+        st.warning("Você já está na estação de destino! Escolha uma rota diferente.")
     else:
-        print(f"==========================================")
-        print(f"📦 EXPRESSO CATRACA - RECIBO DE ROTA 📦")
-        print(f"==========================================")
-        print(f"📍 Origem:  {origem}")
-        print(f"🎯 Destino: {destino}")
-        print(f"⏱️ Tempo Estimado: {tempo} minutos")
-        print(f"🛤️ Trajeto: {' -> '.join(rota)}")
-        print(f"==========================================\n")
-
-
-if __name__ == "__main__":
-    main()
+        with st.spinner("Calculando a melhor rota..."):
+            # Chama a SUA função com o nome certinho!
+            tempo, trajeto = calcular_rota_mais_rapida(grafo_obj, origem, destino)
+            
+            if tempo == float('infinity'):
+                st.error("Não foi possível encontrar uma rota entre essas estações.")
+            else:
+                st.success(f"**Tempo Estimado:** {tempo} minutos")
+                st.info(f"**Trajeto:** {' ➔ '.join(trajeto)}")
+                
